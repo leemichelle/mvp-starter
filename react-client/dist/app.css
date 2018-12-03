@@ -1,5 +1,6 @@
 * {
   font-family: 'Lato', sans-serif;
+
 }
 
 h1 {
@@ -10,38 +11,85 @@ h1 {
   margin-left: 20%;
 }
 
+.cheetos {
+  width: 15%;
+  height: auto;
+}
+
 span {
   margin: 3px;
 }
 
 input {
   margin-left: 45%;
+  height: 35px;
+  width: 15%;
+  font-size: 20px;
+  text-align: center;
 }
 
-.totheleft {
-  margin-left: 45%
+h4 {
+  text-align: center;
+  margin-left: 10px;
 }
+
+.button-container {
+  text-align: center;
+  margin-left: 45px;
+}
+
+.screen {
+  text-align: center;
+  padding-bottom: 15px;
+  margin-left: 50px;
+  font-size: 20px
+}
+
+.screen-div {
+  font-size: 30px;
+  margin-left: 10px;
+}
+
+/* .totheleft {
+  margin-left: 45%
+} */
 
 .time-score-container {
-  margin-left: 45%;
+  margin-left: 47.5%;
   display: flex;
+  font-size: 20px;
+}
+
+.score {
+  color: #F97304;
 }
 
 button {
-  background-color: #246A95;
+  background-color: #F6C741;
   color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  /* margin-left: 45%; */
+  padding: 14px 15px;
+  margin: 7px 0;
+  margin-left: 35px;
   border: none;
   cursor: pointer;
-  width: 8.5%;
+  width: 15.5%;
+  font-size: 18px;
 }
 
-.pop:hover {
+.results {
+  font-size: 60px;
+  text-align: center;
+  margin-top: 300px;
+}
+
+.try-again {
+  margin-left: 45%;
+}
+
+/* .pop:hover {
   animation: shake 0.5s;
   animation-iteration-count: infinite;
-}
+} */
  @keyframes shake {
     0% { transform: translate(1px, 1px) rotate(0deg); }
     10% { transform: translate(-1px, -2px) rotate(-10deg); }

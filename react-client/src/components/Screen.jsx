@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Screen = (props) => (
-  <div className="totheleft">
+  <div className="screen">
     <h4> Type This! </h4>
-    <div>{props.items[0]}</div>
+    <div className="screen-div">{props.items[0]}</div>
   </div>
 )
 
