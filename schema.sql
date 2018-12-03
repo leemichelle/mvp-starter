@@ -1,16 +1,22 @@
-DROP DATABASE IF EXISTS test;
+DROP DATABASE IF EXISTS typeracer;
 
-CREATE DATABASE test;
+CREATE DATABASE typeracer;
 
-USE test;
+\c typeracer;
 
-CREATE TABLE items (
-  id int NOT NULL AUTO_INCREMENT,
-  quantity integer NOT NULL,
-  description varchar(50) NOT NULL,
+CREATE TABLE tests (
+  id INT SERIAL,
+  skill TEXT,
+  words TEXT,
   PRIMARY KEY (ID)
 );
 
-/*  Execute this file from the command line by typing:
- *    mysql -u root < server/schema.sql
- *  to create the database and the tables.*/
+-- copy easy level words
+\COPY tests (skill, words) FROM '/Users/leemur/Documents/hrsF104/hrsf104-mvp-starter/database-postgres/word.tsv' WITH (FORMAT CSV, DELIMITER E'\t');
+
+-- -- copy medium level words
+-- \COPY tests (skill, words) FROM '/Users/leemur/Documents/hrsF104/hrsf104-mvp-starter/typeracer.tsv' WITH (FORMAT CSV, DELIMITER E'\t');
+
+-- -- copy hard level words 
+-- \COPY tests (skill, words) FROM '/Users/leemur/Documents/hrsF104/hrsf104-mvp-starter/typeracer.tsv' WITH (FORMAT CSV, DELIMITER E'\t');
+
