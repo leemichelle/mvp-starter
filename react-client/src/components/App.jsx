@@ -153,6 +153,7 @@ class App extends React.Component {
 
   restartGame() {
     this.setState({
+      score: 0,
       timer: 15,
       clock: {
         color: 'black',
