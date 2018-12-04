@@ -7,6 +7,11 @@ import Start from './Start.jsx';
 import Timer from './Timer.jsx';
 import Cheetos from './Cheetos.jsx';
 
+const stringToNum = (string) => {
+  const num = string.split('%');
+  return Number(num[0]);
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -16,8 +21,9 @@ class App extends React.Component {
       score: 0,
       cheetoShake: {
         animation: '',
+        width: '15%',
       },
-      timer: 15,
+      timer: 30,
       clock: {
         color: 'black',
       },
@@ -33,7 +39,6 @@ class App extends React.Component {
     this.timer = this.timer.bind(this);
     this.restartGame = this.restartGame.bind(this);
     this.showMascot = this.showMascot.bind(this);
-    // this.randomizeWords = this.randomizeWords.bind(this);
   }
 
   componentDidMount() {
@@ -54,23 +59,6 @@ class App extends React.Component {
     });
   }
 
-  // randomizeWords() {
-  //   $.ajax({
-  //     url: '/api/test', 
-  //     success: (data) => {
-  //       console.log('this is data', data.map((word) => {
-  //         this.state.items.push(word.words);
-  //       }))
-  //     },
-  //     error: (err) => {
-  //       console.log('err', err);
-  //     }
-  //   });
-  //   this.setState({
-  //     items: this.state.items.slice(50)
-  //   });
-  // }
-
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -87,7 +75,11 @@ class App extends React.Component {
       this.resetInput(e);
     } else {
       console.log('wrong answer')
-      //more wrong, make hot cheetos bigger, getting too many wrong will block input field
+      this.setState({
+        cheetoShake: {
+          width: stringToNum(this.state.cheetoShake.width) + 2 + '%',
+        }
+      })
     }
   }
 
@@ -95,20 +87,21 @@ class App extends React.Component {
     e.target.value = '';
   }
 
-  // may have to create a function that randomizes shake time so it's different each time?
   cheetoDance() {
     console.log('hi', this.state.shake);
     if (!this.state.shake) {
     this.setState({
       cheetoShake: {
-        animation: 'shake 100s', //why doesn't work?!?
+        animation: 'shake 100s', 
+        width: this.state.cheetoShake.width,
       },
       shake: !this.state.shake,
     })
     } else {
       this.setState({
         cheetoShake: {
-          animation: 'shake 0s', //why doesn't work?!?
+          animation: 'shake 0s', 
+          width: this.state.cheetoShake.width,
         },
         shake: !this.state.shake,
       })
@@ -147,19 +140,25 @@ class App extends React.Component {
   onKeyPress(e) {
     if (e.key === 'Enter') {
       this.checkAnswer(e);
-      // console.log('pressed enter!')
     }
   }
 
   restartGame() {
     this.setState({
       score: 0,
-      timer: 15,
+      timer: 30,
       clock: {
         color: 'black',
       },
       items: this.state.items.slice(50),
+      shake: false,
+      mascot: false,
+      cheetoShake: {
+        animation: '',
+        width: '15%',
+      },
     });
+    stopInterval(this.timer);
   }
 
   showMascot() {
