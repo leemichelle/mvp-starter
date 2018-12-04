@@ -86,6 +86,12 @@ button {
   margin-left: 45%;
 }
 
+.mascot-button {
+  width: 100%;
+  margin: auto;
+  margin-left: 24px;
+}
+
 /* .pop:hover {
   animation: shake 0.5s;
   animation-iteration-count: infinite;

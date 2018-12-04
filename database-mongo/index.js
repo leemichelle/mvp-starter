@@ -11,15 +11,15 @@ db.once('open', function() {
   console.log('mongoose connected successfully');
 });
 
-var itemSchema = mongoose.Schema({
-  quantity: Number,
-  description: String
+var typeSchema = new mongoose.Schema({
+  skill: String,
+  words: String
 });
 
-var Item = mongoose.model('Item', itemSchema);
+var Racer = mongoose.model('Racer', typeSchema);
 
 var selectAll = function(callback) {
-  Item.find({}, function(err, items) {
+  Racer.find({}, function(err, items) {
     if(err) {
       callback(err, null);
     } else {
@@ -28,4 +28,7 @@ var selectAll = function(callback) {
   });
 };
 
-module.exports.selectAll = selectAll;
+module.exports = {
+  selectAll,
+  Racer
+};

@@ -2,10 +2,10 @@ DROP DATABASE IF EXISTS typeracer;
 
 CREATE DATABASE typeracer;
 
-\c typeracer;
+USE typeracer;
 
 CREATE TABLE tests (
-  id INT SERIAL,
+  id INT AUTO_INCREMENT,
   skill TEXT,
   words TEXT,
   PRIMARY KEY (ID)
