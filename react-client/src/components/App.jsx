@@ -4,7 +4,6 @@ import Screen from './Screen.jsx';
 import TypeArea from './TypeArea.jsx';
 import Score from './Score.jsx';
 import Start from './Start.jsx';
-import Timer from './Timer.jsx';
 import Cheetos from './Cheetos.jsx';
 
 const stringToNum = (string) => {
@@ -45,13 +44,9 @@ class App extends React.Component {
     $.ajax({
       url: '/api/test', 
       success: (data) => {
-        console.log('this is data', data.map((word) => {
+        data.map((word) => {
           this.state.items.push(word.words);
-          // console.log('this is state words', this.state.items)
-        }))
-        // this.setState({
-        //   items: data
-        // })
+        })
       },
       error: (err) => {
         console.log('err', err);
@@ -63,7 +58,6 @@ class App extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     });
-    // console.log('this is state in app', this.state)
   }
 
   checkAnswer(e) {
@@ -74,12 +68,11 @@ class App extends React.Component {
       });
       this.resetInput(e);
     } else {
-      console.log('wrong answer')
       this.setState({
         cheetoShake: {
           width: stringToNum(this.state.cheetoShake.width) + 2 + '%',
         }
-      })
+      });
     }
   }
 
@@ -88,15 +81,14 @@ class App extends React.Component {
   }
 
   cheetoDance() {
-    console.log('hi', this.state.shake);
     if (!this.state.shake) {
-    this.setState({
-      cheetoShake: {
-        animation: 'shake 100s', 
-        width: this.state.cheetoShake.width,
-      },
-      shake: !this.state.shake,
-    })
+      this.setState({
+        cheetoShake: {
+          animation: 'shake 100s', 
+          width: this.state.cheetoShake.width,
+        },
+        shake: !this.state.shake,
+      });
     } else {
       this.setState({
         cheetoShake: {
@@ -104,26 +96,19 @@ class App extends React.Component {
           width: this.state.cheetoShake.width,
         },
         shake: !this.state.shake,
-      })
+      });
     }
   }
 
   timer(){
-    console.log('hit timer function')
     let newTime = this.state.timer - 1;
     this.setState({
       timer: newTime,
-      // cheetoShake: {
-      //   animation: 'shake 0.9s',
-      // },
     });
     if (newTime < 10) {
       this.setState({
         clock: {
           color: 'red',
-          // cheetoShake: {
-          //   animation:'shake 0.7s',
-          // },
         },
       });
     }
@@ -134,7 +119,6 @@ class App extends React.Component {
 
   startGame() {
     setInterval(this.timer, 1000)
-    console.log('this is the time', this.state.timer)
   }
 
   onKeyPress(e) {
@@ -168,21 +152,18 @@ class App extends React.Component {
   }
 
   render () {
-    console.log(this.state)
     if (this.state.timer > 0) {
       return (
-      <div>
-        {/* <h1>Hot Cheetos</h1> */}
-        {this.state.mascot ? <Cheetos cheetoShake={this.state.cheetoShake} />: <button className="mascot-button" onClick={this.showMascot}>Click Me</button>}
-        <Screen items={this.state.items} />
-        <TypeArea handleChange={this.handleChange} onKeyPress={this.onKeyPress} cheetoDance={this.cheetoDance} />
-        <span className='time-score-container'>
-        <Score score={this.state.score} /> 
-        <span>Time: <span style={this.state.clock}>{this.state.timer}s</span></span>
-        </span>
-        {/* <Timer startGame={this.startGame} endOfGame={this.endOfGame} /> */}
-        <Start startGame={this.startGame} />
-      </div>
+        <div>
+          {this.state.mascot ? <Cheetos cheetoShake={this.state.cheetoShake} />: <button className="mascot-button" onClick={this.showMascot}>Click Me</button>}
+          <Screen items={this.state.items} />
+          <TypeArea handleChange={this.handleChange} onKeyPress={this.onKeyPress} cheetoDance={this.cheetoDance} />
+          <span className='time-score-container'>
+          <Score score={this.state.score} /> 
+          <span>Time: <span style={this.state.clock}>{this.state.timer}s</span></span>
+          </span>
+          <Start startGame={this.startGame} />
+        </div>
       )
     } else {
       return (
