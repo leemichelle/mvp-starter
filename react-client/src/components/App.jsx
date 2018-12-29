@@ -134,7 +134,7 @@ class App extends React.Component {
       clock: {
         color: 'black',
       },
-      items: this.state.items.slice(50),
+      items: this.state.items.slice(1),
       shake: false,
       mascot: false,
       cheetoShake: {
