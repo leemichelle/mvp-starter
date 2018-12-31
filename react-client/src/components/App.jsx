@@ -1,10 +1,13 @@
 import React from 'react';
 import $ from 'jquery';
-import Screen from './Screen.jsx';
-import TypeArea from './TypeArea.jsx';
-import Score from './Score.jsx';
-import Start from './Start.jsx';
 import Cheetos from './Cheetos.jsx';
+import Results from './Results.jsx';
+import Screen from './Screen.jsx';
+import Score from './Score.jsx';
+import Show from './Show.jsx';
+import Start from './Start.jsx';
+import Timer from './Timer.jsx';
+import TypeArea from './TypeArea.jsx';
 
 const stringToNum = (string) => {
   const num = string.split('%');
@@ -15,19 +18,20 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      items: ['hawt cheetos', 'deerp meerp'],
+      list: ['hot cheetos', 'deerp meerp'],
       words: '',
       score: 0,
       cheetoShake: {
         animation: '',
         width: '15%',
       },
-      timer: 30,
+      timer: 60,
       clock: {
         color: 'black',
       },
       shake: false,
       mascot: false,
+      start: false,
     }
     this.handleChange = this.handleChange.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -45,7 +49,7 @@ class App extends React.Component {
       url: '/api/test', 
       success: (data) => {
         data.map((word) => {
-          this.state.items.push(word.words);
+          this.state.list.push(word.words);
         })
       },
       error: (err) => {
@@ -56,15 +60,19 @@ class App extends React.Component {
 
   handleChange(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      words: e.target.value
     });
   }
 
+  resetInput(e) {
+    e.target.value = '';
+  }
+
   checkAnswer(e) {
-    if (this.state.words === this.state.items[0]) {
+    if (this.state.words === this.state.list[0]) {
       this.setState({
         score: this.state.score + 1,
-        items: this.state.items.slice(1),
+        list: this.state.list.slice(1),
       });
       this.resetInput(e);
     } else {
@@ -76,8 +84,69 @@ class App extends React.Component {
     }
   }
 
-  resetInput(e) {
-    e.target.value = '';
+  onKeyPress(e) {
+    if (e.key === 'Enter') {
+      this.checkAnswer(e);
+    }
+  }
+
+  timer(){
+    let newTime = this.state.timer - 1;
+    this.setState({
+      timer: newTime,
+    });
+    if (newTime < 10) {
+      this.setState({
+        clock: {
+          color: 'red',
+        },
+      });
+    }
+  }
+
+  startGame() {
+    setInterval(this.timer, 1000);
+
+    // let interval = setInterval(this.timer, 1000);
+    // clearInterval(interval);
+
+    // let newTime = this.state.timer - 1;
+    // let interval = setInterval(() => {
+    //   this.setState({
+    //     timer: newTime,
+    //   });
+    //   if (newTime < 10) {
+    //     this.setState({
+    //       clock: {
+    //         color: 'red',
+    //       },
+    //     });
+    //   }}, 1000)
+    // clearInterval(interval);
+  }
+
+  restartGame() {
+    // clearInterval(this.timer())
+    this.setState({
+      score: 0,
+      timer: 60,
+      clock: {
+        color: 'black',
+      },
+      list: this.state.list.slice(1),
+      shake: false,
+      mascot: false,
+      cheetoShake: {
+        animation: '',
+        width: '15%',
+      },
+    });
+  }
+
+  showMascot() {
+    this.setState({
+      mascot: true,
+    });
   }
 
   cheetoDance() {
@@ -100,82 +169,29 @@ class App extends React.Component {
     }
   }
 
-  timer(){
-    let newTime = this.state.timer - 1;
-    this.setState({
-      timer: newTime,
-    });
-    if (newTime < 10) {
-      this.setState({
-        clock: {
-          color: 'red',
-        },
-      });
-    }
-    if (newTime === 0) {
-      window.clearInterval(this.interval);
-    }
-  }
-
-  startGame() {
-    setInterval(this.timer, 1000)
-  }
-
-  onKeyPress(e) {
-    if (e.key === 'Enter') {
-      this.checkAnswer(e);
-    }
-  }
-
-  restartGame() {
-    this.setState({
-      score: 0,
-      timer: 30,
-      clock: {
-        color: 'black',
-      },
-      items: this.state.items.slice(1),
-      shake: false,
-      mascot: false,
-      cheetoShake: {
-        animation: '',
-        width: '15%',
-      },
-    });
-    stopInterval(this.timer);
-  }
-
-  showMascot() {
-    this.setState({
-      mascot: true,
-    });
-  }
-
   render () {
     if (this.state.timer > 0) {
       return (
         <div>
-          {this.state.mascot ? <Cheetos cheetoShake={this.state.cheetoShake} />: <button className="mascot-button" onClick={this.showMascot}>Click Me</button>}
-          <Screen items={this.state.items} />
+          {this.state.mascot ? 
+            <Cheetos cheetoShake={this.state.cheetoShake} /> : 
+            <Show showMascot={this.showMascot} />
+          }
+          <Screen list={this.state.list} />
           <TypeArea handleChange={this.handleChange} onKeyPress={this.onKeyPress} cheetoDance={this.cheetoDance} />
           <span className='time-score-container'>
-          <Score score={this.state.score} /> 
-          <span>Time: <span style={this.state.clock}>{this.state.timer}s</span></span>
+            <Score score={this.state.score} /> 
+            <Timer clock={this.state.clock} timer={this.state.timer} />
           </span>
           <Start startGame={this.startGame} />
         </div>
       )
     } else {
       return (
-        <div>
-        <div className="results">
-        Your final score: {this.state.score}
-        </div>
-        <button className='try-again' onClick={this.restartGame}>Try Again?</button>
-        </div>
+        <Results score={this.state.score} restartGame={this.restartGame} />
       )
     }
-  }
-}
+  };
+};
 
 export default App;

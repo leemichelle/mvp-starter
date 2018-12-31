@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "react-dev": "webpack -d --watch",
-    "server-dev": "nodemon server/index.js"
+    "build": "webpack -d --watch",
+    "start": "nodemon server/index.js",
+    "seed": "node database-mongo/words.js"
   },
-  "author": "Beth Johnson",
+  "author": "Michelle Lee",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.23.1",

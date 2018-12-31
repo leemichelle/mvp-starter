@@ -1,8 +1,5 @@
-const randomWords = require('random-english-words');
 const faker = require('faker');
 const {Racer} = require('./index.js');
-// const fs = require('fs');
-// const path = require('path');
 
 const generateWord = () => {
   return {
